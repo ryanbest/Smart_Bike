@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Smart_Bike_Application</string>
+    
+    <string name="openNavDrawer">Navigation Drawer Open</string>
+    <string name="closeNavDrawer">Navigation Drawer Close</string>
+    <string name="home_page">Home_Page</string>
+    <string name="map_page">Map_Page</string>
+    <string name="activity_page">Activity Page</string>
+    <string name="calorie_page">Calorie Page</string>
+    <string name="function">Function</string>
+    <string name="statistics">Statistics</string>
 </resources>
