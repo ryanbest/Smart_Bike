@@ -1,4 +1,4 @@
-package com.example.smart_bike_application;
+package com.example.smartbike;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.smart_bike_application", appContext.getPackageName());
+        assertEquals("com.example.smartbike", appContext.getPackageName());
     }
 }

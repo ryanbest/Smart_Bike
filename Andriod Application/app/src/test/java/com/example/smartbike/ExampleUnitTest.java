@@ -1,4 +1,4 @@
-package com.example.smart_bike_application;
+package com.example.smartbike;
 
 import org.junit.Test;
 
