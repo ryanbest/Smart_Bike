@@ -111,11 +111,12 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("Biker", "succesful sign in");
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             UpdateUI(firebaseUser);
-                            Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             finish();
                             startActivity(intent);
                             //AccesingUserInfo();
                         } else {
+                            Log.e("Biker", "onComplete: "+task.getException().getLocalizedMessage());
                             Log.d("Biker", "UNsuccesful sign in");
                             Toast.makeText(getApplicationContext(), "Unsuccesful Sign in", Toast.LENGTH_SHORT)
                                     .show();
