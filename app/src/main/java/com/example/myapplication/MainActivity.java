@@ -24,15 +24,6 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity {
-    private GoogleMap mMap;
-    private Location prevLocaton = null;
-    locdata prelocdata = new locdata();
-    LocationManager mLocationManager;
-    TextView mTextView;
-    Timer timer;
-    SpeedView speedometer;
-    String newString;
-
     FrameLayout container;
     BottomNavigationView bottomNavigationView;
 
@@ -65,11 +56,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    class locdata {
-        long mtime;
-        double latitude;
-        double longitude;
-    }
+
 
     private void bindview() {
         container = findViewById(R.id.container);

@@ -11,8 +11,7 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/alert_layout"
-        />
+        android:layout_above="@+id/alert_layout" />
 
 
     <LinearLayout
@@ -49,7 +48,7 @@
             app:sv_indicatorWidth="5dp"
             app:sv_speedometerWidth="15dp"
             app:sv_textSize="0dp"
-            app:sv_withTremble="false"
+            app:sv_withTremble="true"
             />
     </LinearLayout>
 

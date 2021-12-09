@@ -66,6 +66,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         bindview(view);
+
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume();
@@ -110,6 +111,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                //Log.e(TAG, "onDataChange: datasets" + snapshot.child("datasets").getValue());
 
                 //Log.e(TAG, "onDataChange: " + snapshot.getChildren());
                 for (DataSnapshot child : snapshot.getChildren()) {
