@@ -34,4 +34,19 @@ public class Utils {
 
     }
 
+    public static void saveUserid(Context context, String id) {
+        SharedPreferences sharedpreferences = context.getSharedPreferences("user_pref" +
+                "", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("userid", id);
+        editor.apply();
+
+    }
+
+    public static String getUserId(Context context) {
+        SharedPreferences sharedpreferences = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+        return sharedpreferences.getString("userid", "");
+
+    }
+
 }

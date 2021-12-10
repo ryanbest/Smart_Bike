@@ -49,11 +49,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 attemptlogin();
-
-
             }
 
         });
+
+        if (!Utils.getUserId(LoginActivity.this).isEmpty()){
+            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+            finish();
+        }
 
 
     }
@@ -79,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         else{
 
-            if(Password.length()<=6)
+            if(Password.length()<=5)
             {
                 password.requestFocus();
                 password.setError("Incorrect Pasword");
@@ -111,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("Biker", "succesful sign in");
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             UpdateUI(firebaseUser);
+                            Utils.saveUserid(LoginActivity.this,firebaseUser.getUid());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             finish();
                             startActivity(intent);

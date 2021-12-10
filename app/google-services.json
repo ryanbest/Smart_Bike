@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "776707452256",
-    "project_id": "pothole-detection-84ffe",
-    "storage_bucket": "pothole-detection-84ffe.appspot.com"
+    "project_number": "441163520009",
+    "firebase_url": "https://iot-smartbike-default-rtdb.firebaseio.com",
+    "project_id": "iot-smartbike",
+    "storage_bucket": "iot-smartbike.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:776707452256:android:7b92c4644b58fe46c6c205",
+        "mobilesdk_app_id": "1:441163520009:android:96cf7701044059bf36c0d8",
         "android_client_info": {
           "package_name": "com.example.myapplication"
         }
       },
       "oauth_client": [
         {
-          "client_id": "776707452256-mu7s9qtf8ifd86ae5g48cse1ah9oq10g.apps.googleusercontent.com",
+          "client_id": "441163520009-aqm29r1tvsc7ajk23e09hu9jtilq4p9f.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBflCDFedNU-ulIb9-aLkEDL4s1A7_1r1M"
+          "current_key": "AIzaSyA5NEdw9pDfwvzLWtZVaP1u3Qm85QYrCXs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "776707452256-mu7s9qtf8ifd86ae5g48cse1ah9oq10g.apps.googleusercontent.com",
+              "client_id": "441163520009-aqm29r1tvsc7ajk23e09hu9jtilq4p9f.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
