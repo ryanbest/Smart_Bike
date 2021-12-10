@@ -105,29 +105,33 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private void getData() {
         Log.e(TAG, "getData: ");
         firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = firebaseDatabase.getReference("potholes");
+        DatabaseReference myRef = firebaseDatabase.getReference("test_send");
 
-        myRef.addValueEventListener(new ValueEventListener() {
+
+
+        myRef.child("2-push").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                Log.e(TAG, "onDataChange: "+snapshot.toString());
+
                 //Log.e(TAG, "onDataChange: datasets" + snapshot.child("datasets").getValue());
-
-                //Log.e(TAG, "onDataChange: " + snapshot.getChildren());
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    Log.e(TAG, "onDataChange: child " + child.toString());
-                    LatLongModel latLongModel = child.getValue(LatLongModel.class);
-                    latLongModels.add(latLongModel);
-
-
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    LatLng latLng = new LatLng(latLongModel.getLat(), latLongModel.getLan());
-                    markerOptions.position(latLng);
-                    markerOptions.icon(BitmapDescriptorFactory
-                            .fromResource(R.drawable.pothole));
-                    mMap.addMarker(markerOptions);
-
-                }
+//
+//                //Log.e(TAG, "onDataChange: " + snapshot.getChildren());
+//                for (DataSnapshot child : snapshot.getChildren()) {
+//                    Log.e(TAG, "onDataChange: child " + child.toString());
+//                    LatLongModel latLongModel = child.getValue(LatLongModel.class);
+//                    latLongModels.add(latLongModel);
+//
+//
+//                    MarkerOptions markerOptions = new MarkerOptions();
+//                    LatLng latLng = new LatLng(latLongModel.getLat(), latLongModel.getLan());
+//                    markerOptions.position(latLng);
+//                    markerOptions.icon(BitmapDescriptorFactory
+//                            .fromResource(R.drawable.pothole));
+//                    mMap.addMarker(markerOptions);
+//
+//                }
 
 
 //                LatLongModel latLongModel = snapshot.getValue(LatLongModel.class);
@@ -253,38 +257,45 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private double getSpeed(Location location) {
-        double speed = 0;
 
-        Location currLoc = location;
-        locdata data = new locdata();
-        data.latitude = currLoc.getLatitude();
-        data.longitude = currLoc.getLongitude();
-        data.mtime = currLoc.getTime();
+        Log.e(TAG, "getSpeed: "+ location.getSpeed());
 
+        double speed=(double) ((location.getSpeed()*3600)/1000);
 
-        Log.d("vehicle", "prelocdata.latitude" + prelocdata.latitude);
-        Log.d("vehicle", "prelocdata.longitude" + prelocdata.longitude);
-        Log.d("vehicle", "data.latitude" + data.latitude);
-        Log.d("vehicle", "data.longitude" + data.longitude);
-        Log.d("vehicle", "prelocdata.mtime" + prelocdata.mtime);
-        Log.d("vehicle", "data.mtime" + data.mtime);
-        if (prelocdata.mtime != 0) {
-            double distance = getDistance(prelocdata.latitude, prelocdata.longitude,
-                    data.latitude, data.longitude);
-            speed = (distance / (data.mtime - prelocdata.mtime)) * 1000;
-            //mTextView.setText("" + speed);
-            Log.d("vehicle", "SPEED==" + speed);
-        }
-        prelocdata.mtime = currLoc.getTime();
-        prelocdata.latitude = currLoc.getLatitude();
-        prelocdata.longitude = currLoc.getLongitude();
-        Log.d("vehicle", "SPEED==" + speed);
-        if (speed >= 100) {
+//        double speed = 0;
+//
+//        Location currLoc = location;
+//        locdata data = new locdata();
+//        data.latitude = currLoc.getLatitude();
+//        data.longitude = currLoc.getLongitude();
+//        data.mtime = currLoc.getTime();
+//
+//
+//        Log.d("vehicle", "prelocdata.latitude" + prelocdata.latitude);
+//        Log.d("vehicle", "prelocdata.longitude" + prelocdata.longitude);
+//        Log.d("vehicle", "data.latitude" + data.latitude);
+//        Log.d("vehicle", "data.longitude" + data.longitude);
+//        Log.d("vehicle", "prelocdata.mtime" + prelocdata.mtime);
+//        Log.d("vehicle", "data.mtime" + data.mtime);
+//        if (prelocdata.mtime != 0) {
+//            double distance = getDistance(prelocdata.latitude, prelocdata.longitude,
+//                    data.latitude, data.longitude);
+//            speed = (distance / (data.mtime - prelocdata.mtime)) * 1000;
+//            //mTextView.setText("" + speed);
+//            Log.d("vehicle", "SPEED==" + speed);
+//        }
+//        prelocdata.mtime = currLoc.getTime();
+//        prelocdata.latitude = currLoc.getLatitude();
+//        prelocdata.longitude = currLoc.getLongitude();
+//        Log.d("vehicle", "SPEED==" + speed);
+//        if (speed >= 100) {
+//
+//            return speed / 10;
+//        } else {
+//            return speed;
+//        }
 
-            return speed / 10;
-        } else {
-            return speed;
-        }
+        return speed;
     }
 
     private static double getDistance(double lat1, double lon1, double lat2, double lon2) {
