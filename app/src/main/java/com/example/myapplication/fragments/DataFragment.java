@@ -43,9 +43,7 @@ public class DataFragment extends Fragment implements OnChartValueSelectedListen
 
     private static final String TAG = "DATAFRAG";
 
-    Calendar startDate, endDate;
 
-    FirebaseDatabase firebaseDatabase;
 
 
     @Nullable
@@ -60,21 +58,7 @@ public class DataFragment extends Fragment implements OnChartValueSelectedListen
         int daysInMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 
 
-        startDate = Calendar.getInstance();
-        startDate.set(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 
-        endDate = Calendar.getInstance();
-        endDate.set(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH), 23, 59);
-
-
-//        for (int i = 7; i >= 0; i--) {
-//            Random r = new Random();
-//            int i1 = r.nextInt(100 - 50) + 50;
-//            values.add(new Entry(i, i1));
-//            labels.add("" + startDate.get(Calendar.DAY_OF_MONTH));
-//            startDate.add(Calendar.DATE, -1);
-//            endDate.add(Calendar.DATE, -1);
-//        }
 
         getData("ride_time",rideLineChart);
         getData("calories",caloriesLineChart);
@@ -163,6 +147,7 @@ public class DataFragment extends Fragment implements OnChartValueSelectedListen
         leftAxis.setEnabled(false);
 
         lineChart.setData(lineData);
+
         lineChart.invalidate();
     }
 
@@ -192,7 +177,9 @@ public class DataFragment extends Fragment implements OnChartValueSelectedListen
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 DataSnapshot caloriesSnap = snapshot.child(type);
+
                 int sr = 0;
+
                 for (DataSnapshot child : caloriesSnap.getChildren()) {
                     sr = sr + 1;
                     double value = child.getValue(Double.class);

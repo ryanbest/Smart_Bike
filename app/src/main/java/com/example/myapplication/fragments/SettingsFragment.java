@@ -45,7 +45,9 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Utils.saveSpeedLimit(getActivity(), Integer.parseInt(s.toString()));
+                if (!s.toString().isEmpty()) {
+                    Utils.saveSpeedLimit(getActivity(), Integer.parseInt(s.toString()));
+                }
             }
 
             @Override
@@ -104,7 +106,7 @@ public class SettingsFragment extends Fragment {
 
 
         if (Utils.getSpeedLimit(getActivity()) > 0) {
-            etSpeed.setText(Utils.getSpeedLimit(getActivity()));
+            etSpeed.setText(String.valueOf(Utils.getSpeedLimit(getActivity())));
         }
 
         if (!Utils.getContact(getActivity()).isEmpty()) {

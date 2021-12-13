@@ -129,35 +129,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-                //Log.e(TAG, "onDataChange: datasets" + snapshot.child("datasets").getValue());
-//
-//                //Log.e(TAG, "onDataChange: " + snapshot.getChildren());
-//                for (DataSnapshot child : snapshot.getChildren()) {
-//                    Log.e(TAG, "onDataChange: child " + child.toString());
-//                    LatLongModel latLongModel = child.getValue(LatLongModel.class);
-//                    latLongModels.add(latLongModel);
-//
-//
-//                    MarkerOptions markerOptions = new MarkerOptions();
-//                    LatLng latLng = new LatLng(latLongModel.getLat(), latLongModel.getLan());
-//                    markerOptions.position(latLng);
-//                    markerOptions.icon(BitmapDescriptorFactory
-//                            .fromResource(R.drawable.pothole));
-//                    mMap.addMarker(markerOptions);
-//
-//                }
-
-
-//                LatLongModel latLongModel = snapshot.getValue(LatLongModel.class);
-//
-//                Log.e(TAG, "onDataChange: get lat model: " + latLongModel.getLan());
-//
-//                MarkerOptions markerOptions = new MarkerOptions();
-//                LatLng latLng = new LatLng(latLongModel.getLat(), latLongModel.getLan());
-//                markerOptions.position(latLng);
-//                markerOptions.icon(BitmapDescriptorFactory
-//                        .fromResource(R.drawable.pothole));
-//                mMap.addMarker(markerOptions);
 
             }
 
@@ -167,6 +138,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+
 
         myRef.child("2-push").addValueEventListener(new ValueEventListener() {
             @Override
@@ -183,6 +155,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     markerOptions.icon(BitmapDescriptorFactory
                             .fromResource(R.drawable.pothole));
                     mMap.addMarker(markerOptions);
+
                     latLongModels.add(latLongModel);
 
                 }
@@ -334,7 +307,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 //        } else {
 //            return speed;
 //        }
-
         return speed;
     }
 

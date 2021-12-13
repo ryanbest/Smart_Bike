@@ -42,7 +42,6 @@ public class Utils {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("userid", id);
         editor.apply();
-
     }
 
     public static String getUserId(Context context) {
