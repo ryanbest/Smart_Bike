@@ -3,6 +3,8 @@ package com.example.myapplication;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Calendar;
+
 public class Utils {
 
     public static void saveSpeedLimit(Context context, int limit) {
@@ -49,4 +51,12 @@ public class Utils {
 
     }
 
+    public static long getFirstTimeStampOfCurrentMonth(int month, int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);//leap year 29 Feb;)
+        cal.set(Calendar.MONTH, month);
+        cal.set(year, month, cal.getActualMinimum(Calendar.DAY_OF_MONTH), cal.getActualMinimum(Calendar.HOUR_OF_DAY), cal.getActualMinimum(Calendar.MINUTE), cal.getActualMaximum(Calendar.SECOND));
+        cal.set(Calendar.MILLISECOND, cal.getActualMaximum(Calendar.MILLISECOND));
+        return cal.getTimeInMillis();
+    }
 }

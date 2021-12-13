@@ -46,6 +46,13 @@
                 android:layout_height="wrap_content"
                 android:hint="E.g: 40 km/h" />
 
+            <Button
+                android:id="@+id/btn_save_limit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                />
+
 
         </LinearLayout>
 
@@ -81,6 +88,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter contact number here" />
+
+            <Button
+                android:id="@+id/btn_save_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                />
 
 
         </LinearLayout>

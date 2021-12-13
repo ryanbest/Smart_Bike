@@ -109,11 +109,25 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-        myRef.child("2-push").addValueEventListener(new ValueEventListener() {
+        myRef.child("1-set").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                Log.e(TAG, "onDataChange: "+snapshot.toString());
+//                Log.e(TAG, "onDataChange: "+snapshot.getValue());
+
+                double lat =  snapshot.child("location-lat").getValue(Double.class);
+                double lon =  snapshot.child("location-lon").getValue(Double.class);
+
+
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    LatLng latLng = new LatLng(lat, lon);
+                    markerOptions.position(latLng);
+                    markerOptions.icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.pothole));
+                    mMap.addMarker(markerOptions);
+
+
 
                 //Log.e(TAG, "onDataChange: datasets" + snapshot.child("datasets").getValue());
 //
@@ -150,6 +164,32 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG, "Failed to read value.", error.toException());
+
+            }
+        });
+
+        myRef.child("2-push").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot child: snapshot.getChildren()) {
+                    LatLongModel latLongModel = new LatLongModel();
+                    latLongModel.setLocation_lat(child.child("location-lat").getValue(Double.class));
+                    latLongModel.setLocation_lon(child.child("location-lon").getValue(Double.class));
+                    latLongModel.setMessage(child.child("message").getValue(String.class));
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    LatLng latLng = new LatLng(latLongModel.getLocation_lat(), latLongModel.getLocation_lon());
+                    markerOptions.position(latLng);
+                    markerOptions.icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.pothole));
+                    mMap.addMarker(markerOptions);
+                    latLongModels.add(latLongModel);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -207,7 +247,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
 
                 for (LatLongModel latLongModel : latLongModels) {
-                    if (isInRangeMeters(myLaLn, new LatLng(latLongModel.getLat(), latLongModel.getLan()), 100)) {
+                    if (isInRangeMeters(myLaLn, new LatLng(latLongModel.getLocation_lat(), latLongModel.getLocation_lon()), 100)) {
                         tts.speak("Be alert! You're approaching towards a pothole", TextToSpeech.QUEUE_ADD, null);
                         tvAlert.setText("Be alert! You're approaching towards a pothole");
                     }
