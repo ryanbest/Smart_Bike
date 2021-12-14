@@ -17,7 +17,7 @@ public class Utils {
 
     public static int getSpeedLimit(Context context) {
         SharedPreferences sharedpreferences = context.getSharedPreferences("limit_pref", Context.MODE_PRIVATE);
-        return sharedpreferences.getInt("limit", 0);
+        return sharedpreferences.getInt("limit", 10);
 
     }
 

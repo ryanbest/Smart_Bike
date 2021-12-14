@@ -20,8 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.LocationUpdateListener;
 import com.example.myapplication.MyLocation;
 import com.example.myapplication.R;
+import com.example.myapplication.Utils;
 import com.example.myapplication.model.LatLongModel;
 import com.github.anastr.speedviewlib.SpeedView;
 import com.google.android.gms.maps.CameraUpdate;
@@ -84,7 +86,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         });
         tts.setLanguage(Locale.US);
 
-        tvAlert.setText("Speed limit is set to  " + newString + "Km/h.");
+        newString = String.valueOf(Utils.getSpeedLimit(getActivity()));
+
+        tvAlert.setText("Speed limit is set to " + newString + " Km/h.");
 
         return view;
     }
@@ -193,74 +197,132 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
         mMap.setMyLocationEnabled(true);
 
-
-        MyLocation.LocationResult lr = new MyLocation.LocationResult() {
-
-            @Override
-            public void gotLocation(final Location location) {
-
-                LatLng myLaLn = new LatLng(location.getLatitude(), location.getLongitude());
-
-                getData();
+        mMap.setOnMyLocationChangeListener(myLocationChangeListener);
 
 
-                final CameraPosition camPos = new CameraPosition.Builder().target(myLaLn)
-                        .zoom(17)
-                        .bearing(0)
-                        .tilt(30)
-                        .build();
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        CameraUpdate camUpd3 = CameraUpdateFactory.newCameraPosition(camPos);
-                        mMap.animateCamera(camUpd3);
-                    }
-                });
-
-
-                for (LatLongModel latLongModel : latLongModels) {
-                    if (isInRangeMeters(myLaLn, new LatLng(latLongModel.getLocation_lat(), latLongModel.getLocation_lon()), 100)) {
-                        tts.speak("Be alert! You're approaching towards a pothole", TextToSpeech.QUEUE_ADD, null);
-                        tvAlert.setText("Be alert! You're approaching towards a pothole");
-                    }
-
-                }
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        double Speed = getSpeed(location);
-                        int nSpeed = (
-                                int) Speed;
-
-                        Log.e(TAG, "run: speed: " + nSpeed);
-                        //mTextView.setText(""+nSpeed);
-
-                        speedometer.setSpeedAt(nSpeed);
-                        if (nSpeed > Integer.parseInt(newString)) {
-
-//                            Toast.makeText(getActivity(), "CAUTION YOU HAVE EXCEEDED YOUR SPEED LIMIT", Toast.LENGTH_SHORT).show();
-                            tts.speak("CAUTION YOU HAVE EXCEEDED YOUR SPEED LIMIT", TextToSpeech.QUEUE_ADD, null);
-                            tvAlert.setText("CAUTION YOU HAVE EXCEEDED YOUR SPEED LIMIT");
-                            // Get instance of Vibrator from current Context
-                            Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-
-                            // Vibrate for 400 milliseconds
-                            v.vibrate(1000);
-                        }
-
-                        Log.d("Vehicle App", "OnLocation Changed");
-
-                    }
-                });
-            }
-
-        };
-        MyLocation myLocation = new MyLocation();
-        myLocation.getLocation(getActivity(), lr);
+//        MyLocation.LocationResult lr = new MyLocation.LocationResult() {
+//
+//            @Override
+//            public void gotLocation(final Location location) {
+//              setupTheLocation(location);
+//            }
+//
+//        };
+//        MyLocation myLocation = new MyLocation();
+//        myLocation.getLocation(getActivity(), lr);
+//        myLocation.setLocationUpdateListener(new LocationUpdateListener() {
+//            @Override
+//            public void onLocationUpdate(Location location) {
+//                Log.e(TAG, "onLocationUpdate: ");
+//                setupTheLocation(location);
+//            }
+//        });
 
     }
+
+    private void setupTheLocation(Location location){
+        Log.e(TAG, "gotLocation: "+location);
+
+        LatLng myLaLn = new LatLng(location.getLatitude(), location.getLongitude());
+
+        getData();
+
+
+        final CameraPosition camPos = new CameraPosition.Builder().target(myLaLn)
+                .zoom(17)
+                .bearing(0)
+                .tilt(30)
+                .build();
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CameraUpdate camUpd3 = CameraUpdateFactory.newCameraPosition(camPos);
+                mMap.animateCamera(camUpd3);
+            }
+        });
+
+
+        for (LatLongModel latLongModel : latLongModels) {
+            if (isInRangeMeters(myLaLn, new LatLng(latLongModel.getLocation_lat(), latLongModel.getLocation_lon()), 100)) {
+                tts.speak("Be alert! You're approaching towards a pothole", TextToSpeech.QUEUE_ADD, null);
+                tvAlert.setText("Be alert! You're approaching towards a pothole");
+            }
+
+        }
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                double Speed = getSpeed(location);
+                int nSpeed = (
+                        int) Speed;
+
+                Log.e(TAG, "run: speed: " + nSpeed);
+                //mTextView.setText(""+nSpeed);
+
+                speedometer.setSpeedAt(nSpeed);
+                if (nSpeed > Integer.parseInt(newString)) {
+
+//                            Toast.makeText(getActivity(), "CAUTION YOU HAVE EXCEEDED YOUR SPEED LIMIT", Toast.LENGTH_SHORT).show();
+                    tts.speak("CAUTION YOU HAVE EXCEEDED YOUR SPEED LIMIT", TextToSpeech.QUEUE_ADD, null);
+                    tvAlert.setText("CAUTION YOU HAVE EXCEEDED YOUR SPEED LIMIT");
+                    // Get instance of Vibrator from current Context
+                    Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+
+                    // Vibrate for 400 milliseconds
+                    v.vibrate(1000);
+                }
+
+                Log.d("Vehicle App", "OnLocation Changed");
+
+            }
+        });
+
+
+
+
+    }
+
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+        @Override
+        public void onMyLocationChange(Location location) {
+            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+            if(mMap != null){
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+            }
+            LatLng myLaLn = new LatLng(location.getLatitude(), location.getLongitude());
+
+            double Speed = getSpeed(location);
+            int nSpeed = (
+                    int) Speed;
+
+            Log.e(TAG, "run: speed: " + nSpeed);
+            //mTextView.setText(""+nSpeed);
+
+            speedometer.setSpeedAt(nSpeed);
+            if (nSpeed > Integer.parseInt(newString)) {
+
+//                            Toast.makeText(getActivity(), "CAUTION YOU HAVE EXCEEDED YOUR SPEED LIMIT", Toast.LENGTH_SHORT).show();
+                tts.speak("CAUTION YOU HAVE EXCEEDED YOUR SPEED LIMIT", TextToSpeech.QUEUE_ADD, null);
+                tvAlert.setText("CAUTION YOU HAVE EXCEEDED YOUR SPEED LIMIT");
+                // Get instance of Vibrator from current Context
+                Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+
+                // Vibrate for 400 milliseconds
+                v.vibrate(1000);
+            }
+
+            for (LatLongModel latLongModel : latLongModels) {
+                if (isInRangeMeters(myLaLn, new LatLng(latLongModel.getLocation_lat(), latLongModel.getLocation_lon()), 100)) {
+                    tts.speak("Be alert! You're approaching towards a pothole", TextToSpeech.QUEUE_ADD, null);
+                    tvAlert.setText("Be alert! You're approaching towards a pothole");
+                }
+
+            }
+        }
+    };
 
 
     class locdata {
