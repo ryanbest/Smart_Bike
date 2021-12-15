@@ -61,6 +61,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     TextToSpeech tts;
     List<LatLongModel> latLongModels = new ArrayList<>();
     TextView tvAlert;
+    Long lastNotifiedStamp = 0l;
 
 
     @Nullable
@@ -147,7 +148,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         myRef.child("2-push").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.e(TAG, "onDataChange: "+" 2PUSH");
+                latLongModels.clear();
+                mMap.clear();
+
                 for (DataSnapshot child: snapshot.getChildren()) {
+
                     LatLongModel latLongModel = new LatLongModel();
                     latLongModel.setLocation_lat(child.child("location-lat").getValue(Double.class));
                     latLongModel.setLocation_lon(child.child("location-lon").getValue(Double.class));
@@ -313,13 +319,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
                 // Vibrate for 400 milliseconds
                 v.vibrate(1000);
+            }else{
+              //  tvAlert.setText("Speed limit is set to " + newString + " Km/h.");
             }
 
             for (LatLongModel latLongModel : latLongModels) {
                 if (isInRangeMeters(myLaLn, new LatLng(latLongModel.getLocation_lat(), latLongModel.getLocation_lon()), 100)) {
-                    tts.speak("Be alert! You're approaching towards a pothole", TextToSpeech.QUEUE_ADD, null);
-                    tvAlert.setText("Be alert! You're approaching towards a pothole");
-                }
+                    if (System.currentTimeMillis() - lastNotifiedStamp > 10000) {
+                        Log.e(TAG, "onMyLocationChange: alerting ");
+                        tts.speak("Be alert! You're approaching towards a pothole", TextToSpeech.QUEUE_ADD, null);
+                        tvAlert.setText("Be alert! You're approaching towards a pothole");
+                        lastNotifiedStamp = System.currentTimeMillis();
+                    }else {
+                        tvAlert.setText("Speed limit is set to " + newString + " Km/h.");
+                    }
+                }else{
+                  //  tvAlert.setText("Speed limit is set to " + newString + " Km/h.");
+               }
 
             }
         }
