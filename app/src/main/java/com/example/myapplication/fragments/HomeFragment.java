@@ -183,7 +183,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            // TODO: Consider calling
+            // TODO: Consider calling 
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -197,6 +197,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
         mMap.setMyLocationEnabled(true);
 
+        getData();
         mMap.setOnMyLocationChangeListener(myLocationChangeListener);
 
 
