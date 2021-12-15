@@ -17,6 +17,7 @@ public class MyLocation {
     LocationResult locationResult;
     boolean gps_enabled = false;
     boolean network_enabled = false;
+    LocationUpdateListener locationUpdateListener;
 
 
     @SuppressLint("MissingPermission")
@@ -45,9 +46,9 @@ public class MyLocation {
 
 
         if (gps_enabled)
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListenerGps);
         if (network_enabled)
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 10, locationListenerNetwork);
         timer1 = new Timer();
         timer1.schedule(new GetLastLocation(), 2000);
         return true;
@@ -62,6 +63,7 @@ public class MyLocation {
         public void onLocationChanged(Location location) {
             timer1.cancel();
             locationResult.gotLocation(location);
+            locationUpdateListener.onLocationUpdate(location);
             Log.d("on Location Changed", "OnLocation Changed");
             //      getSpeed(location);
             lm.removeUpdates(this);
@@ -85,6 +87,7 @@ public class MyLocation {
         public void onLocationChanged(Location location) {
             timer1.cancel();
             locationResult.gotLocation(location);
+            locationUpdateListener.onLocationUpdate(location);
             Log.d("On Location Changed", "OnLocation Changed");
             //        getSpeed(location);
             lm.removeUpdates(this);
@@ -107,6 +110,7 @@ public class MyLocation {
         @SuppressLint("MissingPermission")
         @Override
         public void run() {
+            Log.e("TAG", "run: "+ "getLastLoction " );
             lm.removeUpdates(locationListenerGps);
             lm.removeUpdates(locationListenerNetwork);
             Location net_loc = null, gps_loc = null;
@@ -141,5 +145,9 @@ public class MyLocation {
 
     public static abstract class LocationResult {
         public abstract void gotLocation(Location location);
+    }
+
+    public void setLocationUpdateListener(LocationUpdateListener locationUpdateListener) {
+        this.locationUpdateListener = locationUpdateListener;
     }
 }
